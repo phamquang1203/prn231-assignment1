@@ -40,7 +40,7 @@ namespace Assignment1_Api.Controllers
             {
                 return NotFound();
             }
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.ProductId == id);
 
             if (product == null)
             {
