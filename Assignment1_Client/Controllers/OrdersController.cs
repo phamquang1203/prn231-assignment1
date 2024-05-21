@@ -226,7 +226,7 @@ namespace Assignment1_Client.Controllers
                 if (start > end)
                 {
                     TempData["ErrorMessage"] = "Start date must be before end date.";
-                    return RedirectToAction("Index", "Order", TempData);
+                    return RedirectToAction("Index", "Orders");
                 }
 
                 listOrders = listOrders.Where(o => o.OrderDate >= start && o.OrderDate <= end).ToList();
@@ -234,7 +234,7 @@ namespace Assignment1_Client.Controllers
             else
             {
                 TempData["ErrorMessage"] = "Please select a date range.";
-                return RedirectToAction("Index", "Order", TempData);
+                return RedirectToAction("Index", "Orders");
             }
 
             if (TempData != null)
@@ -272,7 +272,7 @@ namespace Assignment1_Client.Controllers
             }
 
             ViewData["OrderItems"] = GetOrderItems();
-            ViewData["Staff"] = listMembers;
+            ViewData["Staffs"] = listMembers;
             ViewData["Products"] = listProducts;
 
             return View();

@@ -19,6 +19,13 @@ namespace Assignment1_Client.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            int? userId = HttpContext.Session.GetInt32("USERID");
+            string role = HttpContext.Session.GetString("ROLE");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "You must login to view your order history.";
+                return RedirectToAction("Index", "Home", TempData);
+            }
             List<Category> categories = new List<Category>();
             HttpResponseMessage response = client.GetAsync(client.BaseAddress).Result;
 
@@ -33,6 +40,13 @@ namespace Assignment1_Client.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            int? userId = HttpContext.Session.GetInt32("USERID");
+            string role = HttpContext.Session.GetString("ROLE");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "You must login to view your order history.";
+                return RedirectToAction("Index", "Home", TempData);
+            }
             return View();
         }
 
@@ -59,6 +73,13 @@ namespace Assignment1_Client.Controllers
         [HttpGet]
         public IActionResult Detail(int id)
         {
+            int? userId = HttpContext.Session.GetInt32("USERID");
+            string role = HttpContext.Session.GetString("ROLE");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "You must login to view your order history.";
+                return RedirectToAction("Index", "Home", TempData);
+            }
             Category category = null;
             HttpResponseMessage response = client.GetAsync($"{client.BaseAddress}/{id}").Result;
 
@@ -79,6 +100,13 @@ namespace Assignment1_Client.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            int? userId = HttpContext.Session.GetInt32("USERID");
+            string role = HttpContext.Session.GetString("ROLE");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "You must login to view your order history.";
+                return RedirectToAction("Index", "Home", TempData);
+            }
             Category category = null;
             HttpResponseMessage response = client.GetAsync($"{client.BaseAddress}/{id}").Result;
 
@@ -119,6 +147,13 @@ namespace Assignment1_Client.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            int? userId = HttpContext.Session.GetInt32("USERID");
+            string role = HttpContext.Session.GetString("ROLE");
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "You must login to view your order history.";
+                return RedirectToAction("Index", "Home", TempData);
+            }
             Category category = null;
             HttpResponseMessage response = client.GetAsync($"{client.BaseAddress}/{id}").Result;
 
