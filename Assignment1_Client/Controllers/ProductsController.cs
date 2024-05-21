@@ -52,6 +52,23 @@ namespace Assignment1_Client.Controllers
 
             return View(listProducts);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            int? userId = HttpContext.Session.GetInt32("USERID");
+
+            string Role = HttpContext.Session.GetString("ROLE");
+
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] = "You must login to access this page.";
+                return RedirectToAction("Index", "Home");
+            }
+            Product product = await ApiHandler.DeserializeApiResponse<Product>($"{ProductApiUrl}/{id}", HttpMethod.Get);
+            return View(product);
+        }
+
         public async Task<IActionResult> Search(string keyword)
         {
             List<Product> listMembers = await ApiHandler.DeserializeApiResponse<List<Product>>(ProductApiUrl + "/Search/" + keyword, HttpMethod.Get);
@@ -98,17 +115,17 @@ namespace Assignment1_Client.Controllers
         {
             int? userId = HttpContext.Session.GetInt32("USERID");
 
-            string Role = HttpContext.Session.GetString("USERNAME");
+            string Role = HttpContext.Session.GetString("ROLE");
 
             if (userId == null)
             {
                 TempData["ErrorMessage"] = "You must login to access this page.";
                 return RedirectToAction("Index", "Home");
             }
-            else if (Role != "admin@estore.com")
+            else if (Role != "Admin")
             {
                 TempData["ErrorMessage"] = "You don't have permission to access this page.";
-                return RedirectToAction("Profile", "Member");
+                return RedirectToAction("Profile", "Staffs");
             }
 
             Product product = await ApiHandler.DeserializeApiResponse<Product>(ProductApiUrl + "/" + id, HttpMethod.Get);
