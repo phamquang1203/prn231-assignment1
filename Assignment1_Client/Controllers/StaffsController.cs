@@ -43,6 +43,41 @@ namespace Assignment1_Client.Controllers
 
             return View(listMembers);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            int? userId = HttpContext.Session.GetInt32("USERID");
+            string Role = HttpContext.Session.GetString("ROLE");
+
+            if (userId == null)
+            {
+                //TempData["ErrorMessage"] = "You must login to access this page.";
+                return RedirectToAction("Index", "Home");
+            }
+            else if (Role != "Admin")
+            {
+                TempData["ErrorMessage"] = "You don't have permission to access this page.";
+                return RedirectToAction("Profile", "Staffs");
+            }
+
+            Staff staff = await ApiHandler.DeserializeApiResponse<Staff>(StaffApiUrl + "/" + id, HttpMethod.Get);
+
+            if(staff == null)
+            {
+                TempData["ErrorMessage"] = "No staff exist";
+                return RedirectToAction("Profile", "Staffs");
+            }
+            
+            if (TempData != null)
+            {
+                ViewData["SuccessMessage"] = TempData["SuccessMessage"];
+                ViewData["ErrorMessage"] = TempData["ErrorMessage"];
+            }
+
+            return View(staff);
+        }
+
         public async Task<IActionResult> Search(string keyword)
         {
             List<Staff> listMembers = await ApiHandler.DeserializeApiResponse<List<Staff>>(StaffApiUrl + "/Search/" + keyword, HttpMethod.Get);
