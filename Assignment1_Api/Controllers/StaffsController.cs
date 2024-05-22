@@ -50,14 +50,14 @@ namespace Assignment1_Api.Controllers
         }
 
         // GET: api/Staffs/5
-        [HttpGet("/Name/{name}")]
+        [HttpGet("Name/{name}")]
         public async Task<ActionResult<Staff>> GetStaff(String name)
         {
             if (_context.Staffs == null)
             {
                 return NotFound();
             }
-            var staff = await _context.Staffs.FirstOrDefaultAsync(s => s.Name.Equals("name"));
+            var staff = await _context.Staffs.FirstOrDefaultAsync(s => s.Name.Equals(name));
 
             if (staff == null)
             {
@@ -65,6 +65,15 @@ namespace Assignment1_Api.Controllers
             }
 
             return staff;
+        }
+        [HttpGet("Search/{keyword}")]
+        public async Task<ActionResult<IEnumerable<Staff>>> SearchStaff(String keyword)
+        {
+            if (_context.Staffs == null)
+            {
+                return NotFound();
+            }
+            return await _context.Staffs.Where(s => s.Name.Contains(keyword)).ToListAsync();
         }
 
         // PUT: api/Staffs/5

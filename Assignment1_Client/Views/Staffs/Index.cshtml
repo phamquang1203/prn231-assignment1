@@ -9,6 +9,13 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form action="/Staffs/Search" method="post">
+    <div class="form-group">
+        <label class="control-label" for="search">Search by Name: </label>
+        <input class="form-control" type="text" name="keyword" id="keyword" required/>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -34,7 +41,14 @@
                 @Html.DisplayFor(modelItem => item.Password)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Role)
+                    @if (item.Role == 1)
+                    {
+                        <text>Admin</text>
+                    }
+                    else
+                    {
+                        <text>Customer</text>
+                    }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.StaffId">Edit</a> |
