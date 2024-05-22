@@ -37,7 +37,8 @@ namespace Assignment1_Api
 
             app.MapControllers();
 
-            app.Run();
+              app.Run();
         }
     }
 }
+ 
