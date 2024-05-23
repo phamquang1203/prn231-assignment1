@@ -39,6 +39,9 @@ namespace Assignment1_Client.Utils
                     {
                         return default;
                     }
+                }else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return default;
                 }
                 else
                 {
